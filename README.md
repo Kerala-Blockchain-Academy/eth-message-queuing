@@ -1,13 +1,11 @@
 # Sample Hardhat Project
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a script that deploys that contract.
+To run the project first run a node using `npx hardhat node`
 
-Try running some of the following tasks:
+Then copy the first account address and replace the variable accountAddress on App.js (Lin No. 13).
 
-```shell
-npx hardhat help
-npx hardhat test
-GAS_REPORT=true npx hardhat test
-npx hardhat node
-npx hardhat run scripts/deploy.js
-```
+The deploy contract into blockchain using the command `npx hardhat run scripts/deploy.js`
+
+Then run the application using `npm start`
+
+To check the api, open terminal/cmd using the following command: `curl -d "hash=abcd" -X POST http://127.0.0.1:3000`
