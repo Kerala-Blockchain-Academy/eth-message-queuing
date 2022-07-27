@@ -3,14 +3,27 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-
+const consumer=require("../Rabbit Mq/Consumer")
+const producer=require("../Rabbit Mq/Producer")
 /* ------- Requires-----*/
 var Web3 = require('web3');
 var MyContractJSON = require(path.join(__dirname, 'Storage.json'))
-web3 = new Web3("http://127.0.0.1:8545");
+
+const HDWalletProvider = require('@truffle/hdwallet-provider');
+
+const mnemonic = "rookie dinosaur artwork moment hybrid vibrant design deputy hub maze imitate squeeze";
+addressIndex = 0;
+numberOfAddresses = 1;
+
+var indexRouter = require('./routes/index');
+
+const provider = new HDWalletProvider(mnemonic, `https://polygon-mumbai.g.alchemy.com/v2/iXDJBEPZT6kLteFaRdgrIYWEor5VaZGK`, 
+                                      addressIndex, numberOfAddresses);
+
+web3 = new Web3(provider);
 contractAddress = MyContractJSON.address;
 const contractAbi = MyContractJSON.abi;
-accountAddress = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266";
+accountAddress = "0x06df165b909Ed8087feCDf35B97D8d5Ab83D8cf0";
 SContract = new web3.eth.Contract(contractAbi, contractAddress);
 /*----------------------*/
 
@@ -32,19 +45,27 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
-});
+// app.use(function(req, res, next) {
+//   next(createError(404));
+// });
 
-// error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+// // error handler
+// app.use(function(err, req, res, next) {
+//   // set locals, only providing error in development
+//   res.locals.message = err.message;
+//   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
-});
+//   // render the error page
+//   res.status(err.status || 500);
+//   res.render('error');
+// });
+// app.post('/login',(req,res)=>{
+//   var msg=(req.body.hash)
+//   console.log(msg)
+//   producer(msg)
+//   consumer()
+//   res.send("Success (Look Console)")
+// }); 
+module.exports = app; 
 
-module.exports = app;
+ 
