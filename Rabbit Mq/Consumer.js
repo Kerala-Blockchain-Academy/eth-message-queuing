@@ -13,23 +13,25 @@ const consumer=()=>{
             channel.assertQueue(queueName,{
                 durable:false
             });
+            channel.prefetch(1)
+            i=1
+            console.log("Waiting for Messages to consume..")
             channel.consume(queueName,(msg)=>{
-                console.log(`Recieved(Consumer) : ${msg.content.toString()}`)
-                const data=msg.content.toString()
-                SContract.methods.setData(data).send({ from: accountAddress, gas: 6000000 }).then((tx) =>{
-                    console.log(tx.status)
-                    console.log(tx.transactionHash)
-                    // document.write(`{"status": ${tx.status} "txid": $${tx.transactionHash}}`)
-                  }).catch((err)=>{
-                    if (err){
-                        throw err
-                    }
-                  })
-                  
+                setTimeout(()=>{
+                    console.log(`Recieved(Consumer) : ${msg.content.toString()}`)
+                    const data=msg.content.toString()
+                    channel.ack(msg)
+                    SContract.methods.setData(data).send({ from: accountAddress, gas: 6000000 }).then((tx) =>{
+                        console.log("transaction Details")
+                        console.log(tx.status)
+                        console.log(tx.transactionHash)
+                        // document.write(`{"status": ${tx.status} "txid": $${tx.transactionHash}}`)
+                    })
+                },1000)
             },{
-                noAck : true
-            });
+                noAck:false
+            })
         })    
-    })
+    })    
 }
-module.exports=consumer
+module.exports=consumer;

@@ -3,8 +3,8 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-const consumer=require("../Rabbit Mq/Consumer")
-const producer=require("../Rabbit Mq/Producer")
+const consumer=require("./Rabbit Mq/Consumer")
+const producer=require("./Rabbit Mq/Producer")
 /* ------- Requires-----*/
 var Web3 = require('web3');
 var MyContractJSON = require(path.join(__dirname, 'Storage.json'))
@@ -26,7 +26,7 @@ const contractAbi = MyContractJSON.abi;
 accountAddress = "0x06df165b909Ed8087feCDf35B97D8d5Ab83D8cf0";
 SContract = new web3.eth.Contract(contractAbi, contractAddress);
 /*----------------------*/
-
+var k="https://mumbai.polygonscan.com/address/"+contractAddress;
 
 var indexRouter = require('./routes/index');
 
@@ -60,12 +60,9 @@ app.use('/', indexRouter);
 //   res.render('error');
 // });
 // app.post('/login',(req,res)=>{
-//   var msg=(req.body.hash)
-//   console.log(msg)
-//   producer(msg)
-//   consumer()
-//   res.send("Success (Look Console)")
+//     var msg=(req.body.hash)
+//     producer(msg)
+//     consumer()
+//     res.redirect(k)
 // }); 
-module.exports = app; 
-
- 
+module.exports = app;

@@ -94,7 +94,7 @@ There you can see Rabbit Mq local server and can view,manage the queue which you
 
 `npx hardhat --network polygon run .\scripts\deploy.js`
 
-#### Then run the application using 
+#### Then run the application using 0
 `npm start`
 
 #### To check the api, install postman and input data simoltaniously: 

@@ -3,24 +3,26 @@ var router = express.Router();
 const consumer=require("../Rabbit Mq/Consumer")
 const producer=require("../Rabbit Mq/Producer")
 /* GET home page. */
+consumer()
 router.get("/", function (req, res) {
   // console.log("hello I'm on the start page");
   res.render("index");
 });
-
 router.post('/', function(req, res, next) {
-  var msg=(req.body.hash)
-  producer(msg)
-  consumer()
-  res.send("Transaction Successfull(Go to console for details)")
+  var msg=(req.body[0].hash)
+  if(typeof(msg)=="undefined"){
+    res.send("No input")
+  }
+  else{
+    producer(msg)
+    res.send("Transaction Successfull(Go to console for details)")
+  }
 });
 // router.post('/login', function(req, res, next) {
-//   const data = req.body;
-//   SContract.methods.setData(data.hash).send({ from: accountAddress, gas: 6000000 }).then((tx) =>{
-//     console.log(tx.status)
-//     console.log(tx.transactionHash)
-//     res.send({"status": tx.status, "txid": tx.transactionHash})
+//   var msg=(req.body.hash)
+//   producer(msg)
+//   consumer()
+//   res.send("Transaction Successfull(Go to console for details)")
 //   });
-// });
 module.exports = router;
 
