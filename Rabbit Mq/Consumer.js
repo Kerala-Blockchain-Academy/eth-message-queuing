@@ -11,7 +11,7 @@ const consumer=()=>{
             }
             let queueName = "queue1"
             channel.assertQueue(queueName,{
-                durable:false
+                durable:true
             });
             channel.prefetch(1)
             i=1
@@ -20,18 +20,19 @@ const consumer=()=>{
                 setTimeout(()=>{
                     console.log(`Recieved(Consumer) : ${msg.content.toString()}`)
                     const data=msg.content.toString()
-                    channel.ack(msg)
                     SContract.methods.setData(data).send({ from: accountAddress, gas: 6000000 }).then((tx) =>{
                         console.log("transaction Details")
                         console.log(tx.status)
                         console.log(tx.transactionHash)
-                        // document.write(`{"status": ${tx.status} "txid": $${tx.transactionHash}}`)
+                        //Giving the acknowledgement to the queue that sucessfully used the message for transaction.
+                        channel.ack(msg)
                     })
-                },1000)
-            },{
+                },2000) 
+            },{// To make automatic acknowledgement off//For default it's false.
                 noAck:false
             })
         })    
     })    
 }
-module.exports=consumer;
+module.exports=consumer; 
+

@@ -10,31 +10,23 @@ const producer=(mess)=>{
             if(err){
                 throw err;
             }
+            //Checking Whether the message is string
             if(typeof(mess)==="string"){
-                var mess1=[]
-                mess1.push(mess)
+                var mess1=mess
             }
-            else{
-                mess1=[...mess]
+            //Checking whether the message is an object
+            else if(typeof(mess)==="object"){
+                var mess1=JSON. stringify(mess)
             }
             //Step3 Creating Queue
-            const queueadd=(mess1)=>{
-                if(mess1.length!=0){
-                    message1=mess1.pop()
-                    let queueName = "queue1"
-                    channel.assertQueue(queueName,{
-                    durable:false
-                    });
-                    //Step4: Send to queue
-                    channel.sendToQueue(queueName,Buffer.from(message1));
-                    console.log(`Message (Producer) : ${message1}`)
-                    queueadd(mess1)
-                }
-                else{
-                    return 
-                }
-            }
-            queueadd(mess1)
+            message1=mess1
+            let queueName = "queue1"
+            channel.assertQueue(queueName,{
+            durable:true
+            });
+            //Step4: Send to queue
+            channel.sendToQueue(queueName,Buffer.from(message1));
+            console.log(`Message (Producer) : ${message1}`)
             setTimeout(()=>{
                 connection.close()
             },1000);

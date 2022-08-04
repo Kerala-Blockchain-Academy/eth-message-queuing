@@ -9,7 +9,7 @@ router.get("/", function (req, res) {
   res.render("index");
 });
 router.post('/', function(req, res, next) {
-  var msg=(req.body[0].hash)
+  var msg=(req.body[0])
   if(typeof(msg)=="undefined"){
     res.send("No input")
   }
